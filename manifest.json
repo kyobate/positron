@@ -1,7 +1,7 @@
 {
   "name": "positron",
   "short_name": "positron",
-  "description": "m3u8動画を再生できるPWA",
+  "description": "HLS Player for m3u8 files",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
