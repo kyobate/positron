@@ -2,7 +2,7 @@
   "name": "positron",
   "short_name": "positron",
   "description": "HLS Player for m3u8 files",
-  "start_url": "https://kyobate.github.io/positron/index.html"
+  "start_url": "/positron/index.html"
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
