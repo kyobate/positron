@@ -6,6 +6,12 @@ body {
     text-align: center;
     margin: 0;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 /* ヘッダー */
@@ -51,9 +57,20 @@ button:hover {
 /* 動画プレイヤーのサイズ調整 */
 video {
     display: block;
-    width: 90%;
+    width: 100%;
     max-width: 640px;
+    height: auto;
     margin: 20px auto;
     border: 2px solid white;
     border-radius: 10px;
+    max-height: 80vh; /* 画面内に収める */
+}
+
+/* コンテナの最大幅設定 */
+.container {
+    width: 100%;
+    max-width: 640px;
+    margin: auto;
+    padding: 10px;
+    box-sizing: border-box;
 }
