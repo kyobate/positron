@@ -4,22 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>positron</title>
-    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="icon-192.png">
-    <meta name="theme-color" content="#000000">
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
     <h1>positron - HLS（m3u8）動画プレイヤー</h1>
 
-    <label for="m3u8-url">m3u8 URL:</label>
-    <input type="text" id="m3u8-url" placeholder="m3u8 URL を入力">
-    <button onclick="loadVideo()">再生</button>
-    <button onclick="stopVideo()">停止</button>
-    <button onclick="enterPiP()">PiP（ピクチャインピクチャ）</button>
+    <div class="container">
+        <label for="m3u8-url">m3u8 URL:</label>
+        <input type="text" id="m3u8-url" placeholder="m3u8 URL を入力">
+        
+        <div class="button-group">
+            <button onclick="loadVideo()">▶ 再生</button>
+            <button onclick="stopVideo()">■ 停止</button>
+            <button onclick="enterPiP()">📺 PiP</button>
+        </div>
 
-    <video id="video" controls width="640"></video>
+        <video id="video" controls playsinline></video>
+    </div>
 
     <script src="app.js"></script>
 </body>
