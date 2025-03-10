@@ -5,6 +5,8 @@ const urlsToCache = [
     "/positron/app.js",
     "/positron/manifest.json",
     "/positron/icon.png"
+    "/positron/icon-192.png"
+    "/positron/icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {
