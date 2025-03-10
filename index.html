@@ -79,11 +79,13 @@
     <script>
         // PiPモードを有効にする関数
         function enablePiP() {
-            const videoElement = document.getElementById('video');
-            if (videoElement && videoElement.requestPictureInPicture) {
-                videoElement.requestPictureInPicture();
-            }
-        }
+    const videoElement = document.getElementById('video');
+    if (videoElement && videoElement.requestPictureInPicture) {
+        videoElement.play().then(() => {
+            videoElement.requestPictureInPicture();
+        });
+    }
+}
 
         function loadVideo() {
             const videoElement = document.getElementById('video');
