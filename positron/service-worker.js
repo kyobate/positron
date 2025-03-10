@@ -1,9 +1,9 @@
 const CACHE_NAME = "hls-player-cache-v1";
 const urlsToCache = [
-    "/",
-    "/index.html",
-    "/app.js",
-    "/manifest.json",
+    "/positron/",
+    "/positron/index.html",
+    "/positron/app.js",
+    "/positron/manifest.json",
     "https://cdn.jsdelivr.net/npm/hls.js@latest"
 ];
 
