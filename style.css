@@ -12,7 +12,8 @@ body {
     justify-content: center;
     min-height: 100vh;
     box-sizing: border-box;
-    overflow-x: hidden; /* 横スクロールを防止 */
+    width: 100vw;
+    overflow-x: hidden; /* 横スクロールを防ぐ */
 }
 
 /* ヘッダー */
@@ -58,7 +59,7 @@ button:hover {
 /* 動画プレイヤーのサイズ調整 */
 video {
     display: block;
-    width: 100%; /* 画面幅にフィット */
+    width: 100%; /* 画面の横幅いっぱいにする */
     max-width: 100vw; /* 画面の幅を超えないようにする */
     height: auto;
     margin: 20px auto;
@@ -69,7 +70,7 @@ video {
 /* コンテナの最大幅設定 */
 .container {
     width: 100%;
-    max-width: 640px;
+    max-width: 100%; /* 画面幅を超えないようにする */
     margin: auto;
     padding: 10px;
     box-sizing: border-box;
