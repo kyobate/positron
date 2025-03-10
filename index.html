@@ -4,113 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>positron</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon-192.png">
+    <meta name="theme-color" content="#000000">
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-
-    <style>
-        /* 背景色を黒、文字色を白にする */
-        body {
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-        }
-
-        /* 見出しなどの文字色 */
-        h1 {
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        /* 入力ボックスとボタンのスタイル */
-        input, button {
-            background-color: #333;
-            color: white;
-            border: 1px solid #555;
-            padding: 10px;
-            margin: 5px;
-            width: 200px;
-            font-size: 16px;
-        }
-
-        input:focus, button:hover {
-            background-color: #444;
-        }
-
-        /* 動画プレイヤーのスタイル */
-        video {
-            margin-top: 20px;
-            width: 640px;
-            height: 360px;
-        }
-
-        button.pip-button {
-            margin-top: 20px;
-            background-color: #444;
-            color: white;
-            border: none;
-            padding: 10px;
-        }
-    </style>
 </head>
 <body>
-    <h1>positron HLS player</h1>
+    <h1>positron - HLS（m3u8）動画プレイヤー</h1>
 
     <label for="m3u8-url">m3u8 URL:</label>
     <input type="text" id="m3u8-url" placeholder="m3u8 URL を入力">
     <button onclick="loadVideo()">再生</button>
     <button onclick="stopVideo()">停止</button>
+    <button onclick="enterPiP()">PiP（ピクチャインピクチャ）</button>
 
-    <video id="video" controls width="640" playsinline>
-        <source src="" type="application/x-mpegURL">
-        Your browser does not support the video tag.
-    </video>
-
-    <button class="pip-button" onclick="enablePiP()">ピクチャインピクチャ</button>
+    <video id="video" controls width="640"></video>
 
     <script src="app.js"></script>
-    
-    <script>
-        // PiPモードを有効にする関数
-        function enablePiP() {
-    const videoElement = document.getElementById('video');
-    if (videoElement && videoElement.requestPictureInPicture) {
-        videoElement.play().then(() => {
-            videoElement.requestPictureInPicture();
-        });
-    }
-}
-
-        function loadVideo() {
-            const videoElement = document.getElementById('video');
-            const m3u8Url = document.getElementById('m3u8-url').value;
-
-            if (Hls.isSupported()) {
-                const hls = new Hls();
-                hls.loadSource(m3u8Url);
-                hls.attachMedia(videoElement);
-                hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                    videoElement.play();
-                });
-            } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-                videoElement.src = m3u8Url;
-                videoElement.play();
-            } else {
-                alert('このブラウザではm3u8動画は再生できません。');
-            }
-        }
-
-        function stopVideo() {
-            const videoElement = document.getElementById('video');
-            videoElement.pause();
-            videoElement.currentTime = 0;
-        }
-    </script>
 </body>
 </html>
