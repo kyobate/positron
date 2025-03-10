@@ -1,23 +1,24 @@
-const CACHE_NAME = "hls-player-cache-v1";
-const urlsToCache = [
-    "/positron/",
-    "/positron/index.html",
-    "/positron/app.js",
-    "/positron/manifest.json",
-    "/positron/icon.png"
-    "/positron/icon-192.png"
-    "/positron/icon-512.png"
-];
-
 self.addEventListener("install", (event) => {
-  console.log("Service Worker installing.");
-  self.skipWaiting();
-});
-
-self.addEventListener("activate", (event) => {
-  console.log("Service Worker activated.");
+    console.log("Service Worker installing.");
+    event.waitUntil(
+        caches.open("positron-cache").then((cache) => {
+            return cache.addAll([
+                "/positron/",
+                "/positron/index.html",
+                "/positron/style.css",
+                "/positron/manifest.json",
+                "/positron/app.js",
+                "/positron/icon-192.png",
+                "/positron/icon-512.png"
+            ]);
+        })
+    );
 });
 
 self.addEventListener("fetch", (event) => {
-  console.log("Fetching:", event.request.url);
+    event.respondWith(
+        caches.match(event.request).then((response) => {
+            return response || fetch(event.request);
+        })
+    );
 });
