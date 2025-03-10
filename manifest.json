@@ -1,6 +1,6 @@
 {
-  "name": "HLS Player",
-  "short_name": "HLS Player",
+  "name": "positron",
+  "short_name": "positron",
   "description": "m3u8動画を再生できるPWA",
   "start_url": "./",
   "display": "standalone",
