@@ -35,7 +35,7 @@
     <!-- cURL コマンドを入力する欄 -->
     <h2>cURL コマンドで再生</h2>
     <label for="curl-input">cURL コマンド:</label>
-    <input type="text" id="curl-input" placeholder="cURL コマンドを入力">
+    <textarea id="curl-input" placeholder="cURL コマンドを入力" rows="6" cols="50"></textarea>
     <button id="playCurlButton">再生</button>
     
     <!-- 動画プレイヤー -->
@@ -91,16 +91,18 @@
 
         // cURL コマンドを解析する関数
         function parseCurlCommand(curlCommand) {
-            const urlMatch = curlCommand.match(/\"(https?:\/\/[^\"]+)\"/);
+            const urlMatch = curlCommand.match(/curl ['"](https?:\/\/[^'"\s]+)['"]/);
             if (!urlMatch) return { url: null, headers: {} };
             
             const url = urlMatch[1];
-            const headerMatches = [...curlCommand.matchAll(/-H \"([^\"]+)\"/g)];
+            const headerMatches = [...curlCommand.matchAll(/-H ['"]([^'"\n]+)['"]/g)];
             
             const headers = {};
             headerMatches.forEach(match => {
                 const [key, value] = match[1].split(": ");
-                headers[key.trim()] = value.trim();
+                if (key && value) {
+                    headers[key.trim()] = value.trim();
+                }
             });
             
             return { url, headers };
