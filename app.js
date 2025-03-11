@@ -58,19 +58,19 @@ function loadVideoWithCurl() {
     console.log("Fetching URL:", url);
     console.log("Headers:", headers);
 
-    fetch(url, { headers })
-        .then(response => {
-            if (!response.ok) throw new Error("HTTP error " + response.status);
-            return response.blob();
-        })
-        .then(blob => {
-            const videoUrl = URL.createObjectURL(blob);
-            const videoElement = document.getElementById("video");
-            videoElement.src = videoUrl;
+    // Hls.jsを使って再生する
+    const videoElement = document.getElementById("video");
+    if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(videoElement);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
             videoElement.play();
-        })
-        .catch(error => {
-            console.error("Fetch error:", error);
-            alert("CORS 制限のため動画の取得に失敗しました。");
         });
+    } else if (videoElement.canPlayType("application/vnd.apple.mpegurl")) {
+        videoElement.src = url;
+        videoElement.play();
+    } else {
+        alert("このブラウザは HLS 再生に対応していません");
+    }
 }
