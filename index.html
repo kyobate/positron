@@ -3,27 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>positron</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="icon-192.png">
+    <title>HLS Player with Headers</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        input, button {
+            margin: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        video {
+            width: 100%;
+            max-width: 640px;
+        }
+    </style>
 </head>
 <body>
-    <h1>positron - HLS（m3u8）動画プレイヤー</h1>
-
-    <div class="container">
-        <label for="m3u8-url">m3u8 URL:</label>
-        <input type="text" id="m3u8-url" placeholder="m3u8 URL を入力">
+    <h1>HLS（m3u8）動画プレイヤー</h1>
+    
+    <!-- cURL コマンドを入力する欄 -->
+    <label for="curl-input">cURL コマンド:</label>
+    <input type="text" id="curl-input" placeholder="cURL コマンドを入力">
+    <button id="playButton">再生</button>
+    
+    <!-- 動画プレイヤー -->
+    <video id="video" controls></video>
+    
+    <script>
+        // 再生ボタンのクリックイベント
+        document.getElementById("playButton").addEventListener("click", function () {
+            const curlCommand = document.getElementById("curl-input").value; // 入力された cURL コマンドを取得
+            const { url, headers } = parseCurlCommand(curlCommand); // cURL コマンドを解析し、URL とヘッダーを取得
+            
+            if (!url) {
+                alert("正しい cURL コマンドを入力してください。");
+                return;
+            }
+            
+            // ヘッダー付きで m3u8 ファイルを取得
+            fetch(url, { headers })
+                .then(response => {
+                    if (!response.ok) throw new Error("ストリームの取得に失敗しました");
+                    return response.url;
+                })
+                .then(m3u8Url => {
+                    const video = document.getElementById("video");
+                    if (Hls.isSupported()) {
+                        const hls = new Hls();
+                        hls.loadSource(m3u8Url);
+                        hls.attachMedia(video);
+                        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                            video.play();
+                        });
+                    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+                        video.src = m3u8Url;
+                        video.play();
+                    } else {
+                        alert("このブラウザは HLS をサポートしていません。");
+                    }
+                })
+                .catch(error => alert("エラー: " + error.message));
+        });
         
-        <div class="button-group">
-            <button onclick="loadVideo()">▶ 再生</button>
-            <button onclick="stopVideo()">■ 停止</button>
-            <button onclick="enterPiP()">📺 PiP</button>
-        </div>
-
-        <video id="video" controls playsinline></video>
-    </div>
-
-    <script src="app.js"></script>
+        // cURL コマンドを解析する関数
+        function parseCurlCommand(curlCommand) {
+            // URL を抽出
+            const urlMatch = curlCommand.match(/\"(https?:\/\/[^\"]+)\"/);
+            if (!urlMatch) return { url: null, headers: {} };
+            
+            const url = urlMatch[1]; // URL を取得
+            const headerMatches = [...curlCommand.matchAll(/-H \"([^\"]+)\"/g)]; // ヘッダーを取得
+            
+            const headers = {};
+            headerMatches.forEach(match => {
+                const [key, value] = match[1].split(": "); // キーと値に分割
+                headers[key.trim()] = value.trim();
+            });
+            
+            return { url, headers };
+        }
+    </script>
 </body>
 </html>
