@@ -1,78 +1,41 @@
-/* 全体のスタイル */
-html, body {
+body {
     background-color: black;
     color: white;
     font-family: Arial, sans-serif;
     text-align: center;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    width: 100%;
-    overflow-x: hidden; /* 横スクロールを防ぐ */
-    position: relative;
 }
 
-/* ヘッダー */
-h1 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-/* 入力フィールド */
-input {
-    width: 80%;
+.input-section {
+    margin: 20px;
     padding: 10px;
-    font-size: 16px;
-    margin: 10px 0;
+    border: 1px solid white;
     border-radius: 5px;
-    border: none;
 }
 
-/* ボタンの配置を調整 */
-.button-group {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+input, textarea {
+    width: 80%;
+    padding: 5px;
+    margin: 10px 0;
+    background-color: #222;
+    color: white;
+    border: 1px solid white;
 }
 
-/* ボタンのデザイン */
 button {
-    background-color: #1e90ff;
+    padding: 10px;
+    background-color: #007BFF;
     color: white;
     border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    border-radius: 5px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-button:hover {
-    background-color: #005bbb;
+.video-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
 
-/* 動画プレイヤーのサイズ調整 */
 video {
-    display: block;
-    width: 100%; /* 画面の横幅いっぱいにする */
-    max-width: 100%; /* 画面の幅を超えないようにする */
-    height: auto;
-    margin: 20px auto;
-    border: 2px solid white;
-    border-radius: 10px;
-    object-fit: contain; /* Safariでの比率崩れを防ぐ */
-}
-
-/* コンテナの最大幅設定 */
-.container {
     width: 100%;
-    max-width: 100%; /* 画面幅を超えないようにする */
-    margin: auto;
-    padding: 10px;
-    box-sizing: border-box;
+    max-width: 800px;
 }
