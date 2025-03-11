@@ -1,19 +1,19 @@
 /* 全体のスタイル */
-body {
+html, body {
     background-color: black;
     color: white;
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    box-sizing: border-box;
-    width: 100vw;
+    width: 100%;
     overflow-x: hidden; /* 横スクロールを防ぐ */
+    position: relative;
 }
 
 /* ヘッダー */
@@ -60,11 +60,12 @@ button:hover {
 video {
     display: block;
     width: 100%; /* 画面の横幅いっぱいにする */
-    max-width: 100vw; /* 画面の幅を超えないようにする */
+    max-width: 100%; /* 画面の幅を超えないようにする */
     height: auto;
     margin: 20px auto;
     border: 2px solid white;
     border-radius: 10px;
+    object-fit: contain; /* Safariでの比率崩れを防ぐ */
 }
 
 /* コンテナの最大幅設定 */
