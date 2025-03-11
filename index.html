@@ -4,28 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Positron - HLS Player</title>
+    <link rel="stylesheet" href="styles.css"> <!-- styles.css を正しく読み込む -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>HLS（m3u8）動画プレイヤー</h1>
+    <h1>Positron - HLS プレイヤー</h1>
 
-    <div class="input-section">
-        <h2>① 直接 m3u8 URL を入力</h2>
-        <label for="m3u8-url">m3u8 URL:</label>
-        <input type="text" id="m3u8-url" placeholder="m3u8 URL を入力">
-        <button onclick="loadVideo()">再生</button>
-    </div>
+    <!-- m3u8 URL 直接入力 -->
+    <label for="m3u8-url">m3u8 URL:</label>
+    <input type="text" id="m3u8-url" placeholder="m3u8 URL を入力">
+    <button onclick="loadVideo()">再生</button>
 
-    <div class="input-section">
-        <h2>② cURL コマンドを入力</h2>
-        <textarea id="curl-input" rows="5" placeholder="cURL コマンドを入力"></textarea>
-        <button onclick="loadVideoWithCurl()">cURL で再生</button>
-    </div>
+    <!-- cURL コマンド入力 -->
+    <h2>cURL コマンドで再生</h2>
+    <textarea id="curl-input" placeholder="cURL コマンドを入力"></textarea>
+    <button onclick="loadVideoWithCurl()">cURL で再生</button>
 
-    <div class="video-container">
-        <video id="video" controls></video>
-    </div>
+    <!-- 動画プレイヤー -->
+    <video id="video" controls width="100%"></video>
 
     <script src="app.js"></script>
 </body>
