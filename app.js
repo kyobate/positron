@@ -1,4 +1,3 @@
-// HLS.jsを使用して動画を再生する関数
 function loadVideo() {
     const videoElement = document.getElementById("video");
     const m3u8Url = document.getElementById("m3u8-url").value;
