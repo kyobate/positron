@@ -26,62 +26,80 @@
 <body>
     <h1>HLS（m3u8）動画プレイヤー</h1>
     
+    <!-- m3u8 URL で再生する欄 -->
+    <h2>m3u8 URL で再生</h2>
+    <label for="m3u8-url">m3u8 URL:</label>
+    <input type="text" id="m3u8-url" placeholder="m3u8 URL を入力">
+    <button id="playM3U8Button">再生</button>
+    
     <!-- cURL コマンドを入力する欄 -->
+    <h2>cURL コマンドで再生</h2>
     <label for="curl-input">cURL コマンド:</label>
     <input type="text" id="curl-input" placeholder="cURL コマンドを入力">
-    <button id="playButton">再生</button>
+    <button id="playCurlButton">再生</button>
     
     <!-- 動画プレイヤー -->
     <video id="video" controls></video>
     
     <script>
-        // 再生ボタンのクリックイベント
-        document.getElementById("playButton").addEventListener("click", function () {
-            const curlCommand = document.getElementById("curl-input").value; // 入力された cURL コマンドを取得
-            const { url, headers } = parseCurlCommand(curlCommand); // cURL コマンドを解析し、URL とヘッダーを取得
+        // m3u8 URL で直接再生する
+        document.getElementById("playM3U8Button").addEventListener("click", function () {
+            const m3u8Url = document.getElementById("m3u8-url").value;
+            if (!m3u8Url) {
+                alert("m3u8 URL を入力してください。");
+                return;
+            }
+            playVideo(m3u8Url);
+        });
+
+        // cURL コマンドを解析して再生する
+        document.getElementById("playCurlButton").addEventListener("click", function () {
+            const curlCommand = document.getElementById("curl-input").value;
+            const { url, headers } = parseCurlCommand(curlCommand);
             
             if (!url) {
                 alert("正しい cURL コマンドを入力してください。");
                 return;
             }
             
-            // ヘッダー付きで m3u8 ファイルを取得
             fetch(url, { headers })
                 .then(response => {
                     if (!response.ok) throw new Error("ストリームの取得に失敗しました");
                     return response.url;
                 })
-                .then(m3u8Url => {
-                    const video = document.getElementById("video");
-                    if (Hls.isSupported()) {
-                        const hls = new Hls();
-                        hls.loadSource(m3u8Url);
-                        hls.attachMedia(video);
-                        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                            video.play();
-                        });
-                    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-                        video.src = m3u8Url;
-                        video.play();
-                    } else {
-                        alert("このブラウザは HLS をサポートしていません。");
-                    }
-                })
+                .then(m3u8Url => playVideo(m3u8Url))
                 .catch(error => alert("エラー: " + error.message));
         });
-        
+
+        // 動画を再生する関数
+        function playVideo(m3u8Url) {
+            const video = document.getElementById("video");
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(m3u8Url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    video.play();
+                });
+            } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+                video.src = m3u8Url;
+                video.play();
+            } else {
+                alert("このブラウザは HLS をサポートしていません。");
+            }
+        }
+
         // cURL コマンドを解析する関数
         function parseCurlCommand(curlCommand) {
-            // URL を抽出
             const urlMatch = curlCommand.match(/\"(https?:\/\/[^\"]+)\"/);
             if (!urlMatch) return { url: null, headers: {} };
             
-            const url = urlMatch[1]; // URL を取得
-            const headerMatches = [...curlCommand.matchAll(/-H \"([^\"]+)\"/g)]; // ヘッダーを取得
+            const url = urlMatch[1];
+            const headerMatches = [...curlCommand.matchAll(/-H \"([^\"]+)\"/g)];
             
             const headers = {};
             headerMatches.forEach(match => {
-                const [key, value] = match[1].split(": "); // キーと値に分割
+                const [key, value] = match[1].split(": ");
                 headers[key.trim()] = value.trim();
             });
             
